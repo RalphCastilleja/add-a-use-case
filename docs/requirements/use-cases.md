@@ -1473,6 +1473,7 @@ Details:
 7. Use case ends.
 
 **Extensions:**
+- 6a. The student has an existing login. The system enforces FR-SEC-active-account on the next protected request after deactivation, including requests with otherwise-valid credentials.
 **Priority:** Low
 **Frequency of Use:** Rare. Occurs occasionally when a student withdraws from a course section.
 **Business Rules:** BR-student-lifecycle, BR-submission-owed, BR-inactive-peer-evaluations
