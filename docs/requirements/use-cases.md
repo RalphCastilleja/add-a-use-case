@@ -1472,6 +1472,7 @@ Details:
 7. Use case ends.
 
 **Extensions:**
+- 3b. The actor is unauthorized under BR-student-lifecycle. The system denies the action and makes no change. The system checks authorization when processing confirmation.
 - 3a. The selected student is already inactive, or becomes inactive before confirmation is processed. The system reports that the student is already deactivated and makes no change.
 - 6a. The student has an existing login. The system enforces FR-SEC-active-account on the next protected request after deactivation, including requests with otherwise-valid credentials.
 **Priority:** Low
