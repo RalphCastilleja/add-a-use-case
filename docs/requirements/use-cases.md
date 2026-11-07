@@ -1475,6 +1475,7 @@ Details:
 - 3b. The actor is unauthorized under BR-student-lifecycle. The system denies the action and makes no change. The system checks authorization when processing confirmation.
 - 3a. The selected student is already inactive, or becomes inactive before confirmation is processed. The system reports that the student is already deactivated and makes no change.
 - 6a. The student has an existing login. The system enforces FR-SEC-active-account on the next protected request after deactivation, including requests with otherwise-valid credentials.
+- 4a. The actor cancels at the warning. The system dismisses the warning and returns to the student details without changing the account.
 **Priority:** Low
 **Frequency of Use:** Rare. Occurs occasionally when a student withdraws from a course section.
 **Business Rules:** BR-student-lifecycle, BR-submission-owed, BR-inactive-peer-evaluations
