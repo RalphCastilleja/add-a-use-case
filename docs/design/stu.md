@@ -29,7 +29,7 @@ sequenceDiagram
 
 - Register the POST matcher under the configured API base in `SecurityConfiguration` for `ROLE_admin` and `ROLE_instructor`. Resolve instructor scope from the target student's current course section in the service. Check scope before disclosing account status. Use 403 for denied scope, 404 for a missing student, and 409 for an already inactive student.
 - Apply the state change transactionally. Make the enabled-to-disabled transition conditional so two confirmations cannot both succeed. Remove the student status dropdown and the generic update path's ability to write the enabled flag.
-- On authenticated student requests, resolve the current account using the stable student identity in the JWT and reject inactive accounts at authentication with 401. Preserve existing token validation and login checks.
+- On authenticated student requests, resolve the current account using the JWT userId claim and reject inactive accounts at authentication with 401. Preserve existing token validation and login checks.
 
 ## **Performance tracking**
 
@@ -50,3 +50,19 @@ sequenceDiagram
 | Repeat deactivation | 3a | A second confirmation reports the student already inactive and preserves state. |
 | Enforce actor scope | 3b, BR-student-lifecycle | Course admin and assigned instructor can deactivate. Unassigned instructor and student receive a denial with no state change. |
 | Prevent generic edit bypass | Steps 3–6 | Generic profile updates cannot change account status. |
+
+## **Class boundaries**
+
+```mermaid
+classDiagram
+    StudentController --> StudentService
+    StudentService --> StudentRepository
+    StudentRepository --> Student
+    SecurityConfiguration --> StudentRepository : current account check
+    EvaluationService --> Student : target eligibility
+    SubmissionStatusService --> Student : owed work eligibility
+```
+
+Use the existing controller response and exception conventions for the dedicated action.
+Keep account status changes out of generic profile updates while preserving name and email updates.
+Reactivation remains a separate use case. The retained team membership remains subject to any explicit team reassignment made while the account is inactive.

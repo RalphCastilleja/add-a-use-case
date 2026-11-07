@@ -1519,6 +1519,7 @@ Details:
 **Business Rules:** BR-student-lifecycle
 
 **Associated Information:**
+- Deactivation retains team membership under BR-student-lifecycle. Reactivation uses the current membership, including any explicit reassignment made while inactive. Peer evaluation eligibility follows BR-inactive-peer-evaluations and BR-submission-owed.
 - The course admin or instructor shall be able to cancel the use case at any time prior to submitting it.
 
 **Related Use Cases:** UC-STU-delete-student: Delete a student; UC-STU-deactivate-student: Deactivate a student
