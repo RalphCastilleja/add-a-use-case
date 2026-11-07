@@ -21,7 +21,7 @@ sequenceDiagram
     Controller->>Service: Deactivate selected student
     Service->>Repository: Check scope and update enabled flag
     Repository-->>Service: Updated
-    Controller-->>Details: 204 No Content
+    Controller-->>Details: 200 with Result success envelope
     Details-->>Instructor: Refresh details and show success
 ```
 
@@ -49,6 +49,8 @@ sequenceDiagram
 | Deny existing credentials | 6a, FR-SEC-active-account | A token that worked before deactivation is denied on the next protected request. A new login is denied too. |
 | Repeat deactivation | 3a | A second confirmation reports the student already inactive and preserves state. |
 | Enforce actor scope | 3b, BR-student-lifecycle | Course admin and assigned instructor can deactivate. Unassigned instructor and student receive a denial with no state change. |
+| Enforce concurrent ordering | BR-inactive-peer-evaluations, 3a | Concurrent confirmations produce one success. Evaluation writes serialize with deactivation and cannot commit after it. |
+| Deny inactive instructor credentials | FR-SEC-active-account | A previously issued instructor token is rejected after the account becomes inactive. |
 | Prevent generic edit bypass | Steps 3–6 | Generic profile updates cannot change account status. |
 
 ## **Class boundaries**
@@ -66,3 +68,10 @@ classDiagram
 Use the existing controller response and exception conventions for the dedicated action.
 Keep account status changes out of generic profile updates while preserving name and email updates.
 Reactivation remains a separate use case. The retained team membership remains subject to any explicit team reassignment made while the account is inactive.
+
+## **Consistency and authorization decisions**
+
+- Obtain caller identity and course scope through UserUtils. A course admin must own the target student's course. An instructor must be assigned to the target student's current course section. Resolve scope and change status in one transaction under a student row lock so reassignment cannot invalidate the checked ownership before the update.
+- Evaluation writes and deactivation acquire the same target student row lock before checking enabled status. A write that commits first remains saved history. A deactivation that commits first causes the subsequent evaluation write to fail. Apply this to creation and updates submitted after deactivation.
+- The shared account-status check covers both student and instructor tokens under FR-SEC-active-account, using the existing account discriminator and userId. Include an inactive-instructor token regression test. This does not add an instructor lifecycle action.
+- Use the existing Result success envelope and centralized error handling. Include cross-course admin denial, concurrent confirmations, and concurrent evaluation writes in the backend acceptance tests.
