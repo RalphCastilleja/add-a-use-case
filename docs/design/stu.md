@@ -47,9 +47,9 @@ sequenceDiagram
 | Reject inactive evaluation target | BR-inactive-peer-evaluations | Form omits the target and a stale submission is rejected without adding a rating. |
 | Keep historical reporting | BR-inactive-peer-evaluations | Inactive student appears with saved ratings for the requested week and is absent for a week without them. |
 | Deny existing credentials | 6a, FR-SEC-active-account | A token that worked before deactivation is denied on the next protected request. A new login is denied too. |
-| Repeat deactivation | 3a | A second confirmation reports the student already inactive and preserves state. |
-| Enforce actor scope | 3b, BR-student-lifecycle | Course admin and assigned instructor can deactivate. Unassigned instructor and student receive a denial with no state change. |
-| Enforce concurrent ordering | BR-inactive-peer-evaluations, 3a | Concurrent confirmations produce one success. Evaluation writes serialize with deactivation and cannot commit after it. |
+| Repeat deactivation | 6b | A second confirmation reports the student already inactive and preserves state. |
+| Enforce actor scope | 6c, BR-student-lifecycle | Course admin and assigned instructor can deactivate. Unassigned instructor and student receive a denial with no state change. |
+| Enforce concurrent ordering | BR-inactive-peer-evaluations, 6b | Concurrent confirmations produce one success. Evaluation writes serialize with deactivation and cannot commit after it. |
 | Deny inactive instructor credentials | FR-SEC-active-account | A previously issued instructor token is rejected after the account becomes inactive. |
 | Prevent generic edit bypass | Steps 3–6 | Generic profile updates cannot change account status. |
 
