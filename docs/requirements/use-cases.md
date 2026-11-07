@@ -1458,7 +1458,6 @@ Details:
 
 **Preconditions:**
 - PRE-1. The course admin or instructor is logged into the system.
-- PRE-2. There exists at least one active student in the system.
 
 **Postconditions:**
 - POST-1. The student's account is deactivated.
@@ -1473,6 +1472,7 @@ Details:
 7. Use case ends.
 
 **Extensions:**
+- 3a. The selected student is already inactive, or becomes inactive before confirmation is processed. The system reports that the student is already deactivated and makes no change.
 - 6a. The student has an existing login. The system enforces FR-SEC-active-account on the next protected request after deactivation, including requests with otherwise-valid credentials.
 **Priority:** Low
 **Frequency of Use:** Rare. Occurs occasionally when a student withdraws from a course section.
