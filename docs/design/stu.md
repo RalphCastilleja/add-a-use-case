@@ -1,6 +1,6 @@
 # **Student account lifecycle**
 
-**Realizes** [UC-STU-deactivate-student](../requirements/use-cases.md#uc-stu-deactivate-student-the-course-admininstructor-deactivates-a-student)  
+**Realizes** [UC-STU-deactivate-student](../requirements/use-cases.md#uc-stu-deactivate-student-the-course-admininstructor-deactivates-a-student)
 **Depends on** FR-SEC-active-account, BR-student-lifecycle, BR-submission-owed, BR-inactive-peer-evaluations
 
 This flow uses the existing [platform containers](architectural-design.md) and student account model. The existing enabled flag is sufficient. The design requires no schema change.
